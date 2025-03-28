@@ -22,13 +22,25 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install --legacy-peer-deps
+          npm install next@14.1.0 react@18.2.0 react-dom@18.2.0 --legacy-peer-deps
+        
+      - name: Debug Info
+        run: |
+          node --version
+          npm --version
+          ls -la
+          cat package.json
         
       - name: Build
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /students
           NODE_ENV: production
+        
+      - name: Debug Build Output
+        run: ls -la out || true
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
